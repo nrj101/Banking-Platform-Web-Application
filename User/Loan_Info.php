@@ -1,0 +1,91 @@
+<?php
+session_start();
+if(!isset($_SESSION['User_ID']))
+{
+	header('location:../HomePage.php');
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>::Loan Info::</title>
+	<link rel="stylesheet" type="text/css" href="w3-4.css">
+	<style>
+			body{background:linear-gradient(rgba(12, 248, 252,0.4),rgba(10, 2, 242,1));}
+			#page{/*border:2px solid #05fc2e;*/ margin:5px auto 5px auto; padding:5px;} 
+			#header{/*background-color:#f7f7fc; border:2px solid #f90e65;*/ margin:inherit;padding:inherit;}
+			#logo{text-align:center;margin:inherit;padding:inherit;}
+			img.LogoImg{ width:32%; height:150px;border:1px solid #a35501; vertical-align:bottom;}
+			#navigation{float:left; margin:0px 15px;/* border:2px solid #f90e65;*/}
+			abbr[title]{text-decoration:none; border:none;}
+			.heading{color:blue;display:inline;}
+			#content{ min-height: 390px;}
+			.w3-button{margin:10px 3px 10px 3px;}
+			#logout{ margin-left:120px;}
+			
+			.footer{height:50px; color:white; text-align:right; margin:10px auto 5px auto; padding:20px 15px 0px 0px;}
+			.footer a{text-decoration:none;}
+	</style>
+</head>
+
+<body>
+<div id="page" class="w3-container">
+	<!--Header-->
+	
+	<div id="header" class="w3-container w3-col m12 l12 w3-center">
+		<div id="logo">
+			<img src="../images/building-image-7.jpg" alt="logo.jpg" class="LogoImg" align="left">
+			<h1 class="heading" ><!--style="border:2px solid #f90e65;"--> <abbr title="Father's Bank Of India">:: FBI</abbr> -> User Dashboard ::</h1>
+		</div>
+		<!--Navigation Bar-->
+				<div id="navigation" class="w3-bar">
+					<a href="User_Home.php" class="w3-bar-item w3-button w3-round-xlarge w3-padding-large w3-green w3-hover-lime">Home</a>	
+					<div class="w3-dropdown-hover">
+					    <button class="w3-button w3-round-xlarge w3-red w3-hover-lime">My Profile <img src="../images/photo-avatar.png" alt="logo.jpg" style="width:30px"/> </button>
+						<div id="profile" class="w3-dropdown-content w3-bar-block  w3-round-xlarge w3-aqua w3-animate-zoom">
+							<a href="Profile.php" class="w3-bar-item w3-button w3-round-xlarge w3-green w3-hover-lime">View Profile</a>
+							<a href="Change_Login_Details.php" class="w3-bar-item w3-button w3-round-xlarge w3-green w3-hover-lime">Change Login Details</a>
+					    </div>
+					</div>
+						
+					<a href="Balance.php" class="w3-bar-item w3-button w3-round-xlarge w3-padding-large w3-green w3-hover-lime">Balance</a>
+					<a href="Mini-Statement.php" class="w3-bar-item w3-button w3-round-xlarge w3-padding-large w3-green w3-hover-lime">Mini-Statement</a>
+					<a href="Transfer.php" class="w3-bar-item w3-button w3-round-xlarge w3-padding-large w3-green w3-hover-lime">Transfer</a>
+					<a href="../LogOut.php" id="logout" class="w3-bar-item w3-button w3-round-xlarge w3-padding-large w3-green w3-hover-lime"> <!--style="float:right; clear:right;"-->LogOut</a>
+				
+				</div>
+				<div id="welcome" style="margin-right:1%; float:right; clear:both;">
+					<p class="w3-text-white" ><?php echo $_SESSION['Welcome']?></p>
+				</div>
+	</div>
+	<!--Content-->	
+	<div id="content" class="w3-container w3-col m12 l12 w3-center">
+<?php
+	$ln=$_GET['ln'];
+	$con=new mysqli('localhost','root','','test') or die("Failed to connect to MySQL ".mysqli_error($con));
+	$query="SELECT * FROM loans WHERE LOAN_NO='$ln'";  
+	$result=mysqli_query($con,$query);
+	$info=mysqli_fetch_assoc($result);
+
+?>
+		<h2 align="center">Loan Details</h2>
+		<form>
+		<table title="Loan Info." border=4 width="65%" align="center" style="background-color:#010; color:#fff;">
+			<tr><td>Loan No. : </td><td><?php echo $ln;?></td></tr>
+			<tr><td>Loan Type. : </td><td><?php echo $info['Loan_Type'];?></td></tr>
+			<tr><td>A/C No. : </td><td><?php echo $info['AC_NO'];?></td></tr>
+			<tr><td>Amount (INR) : </td><td><?php echo $info['Amount'];?></td></tr>
+			<tr><td>Name : </td><td><?php echo $info['NAME'];?></td></tr>
+			<tr><td>Approved On : </td><td><?php echo $info['DOA'];?></td></tr>
+			<tr><td>Aadhaar No. : </td><td><?php echo $info['AADHAAR'];?></td></tr>
+			<tr><td>PAN : </td><td><?php echo $info['PAN'];?></td></tr>
+		</table><br>
+		</form>
+	</div>
+	<!--Footer-->
+	<div class="footer w3-container w3-col m12 l12">
+		<a href="#">Help</a>&nbsp;|&nbsp;<a href="#">Privacy Policy</a>&nbsp;|&nbsp;<a href="#">T&amp;C</a>&nbsp;|&nbsp;<a href="#">&copy;2018 <abbr title="Father's Bank Of India">FBI</abbr></a>
+	</div>
+</div>	
+</body>
+</html>
